@@ -2,30 +2,63 @@
 
 
 
-username=$(whoami)
+username=$(whoami) # Get username of system
 
-KYGnus_dir=/home/$username/KYGnus
+<<check_directory
+
+This part of code check if KYGnus_Backup directory
+is created or if not created Create New One
+
+check_directory
+
+
+KYGnus_dir=/home/$username/KYGnus_Backup
 if test -d "$KYGnus_dir"; then
 	    echo "$KYGnus_dir exists."
     else
-	    mkdir /home/$username/KYGnus
+	    mkdir /home/$username/KYGnus_Backup
 fi
 
 Directory="/home/koosha/Documents/testfiles/RUST"
 
 
 
-time=$(date +%H%M)
-disk=$(du -sh $Directory)
+time=$(date +%H%M) # Get Time of system in Hour and Minute 
+disk=$(du -sh $Directory) # check Usage of Directory
+
+
+
+<<Scan
+
+this Part of code check Directory for malicious Files and 
+Scan it with Linux popular Security Tools like clamav and RKhunter
+
+Scan
+
+scan(){
+
+	clamav_scan=$(clamscan -s $Directory) # Scan
+	clamav_move=$(clamscan -r --move $Directory) # Remove
+	maldet=$(maldet -a $Directory) # Detect malware
+	maldet_monitor=$(maldet --monitor $Directory) # show what scanned
+	maldet_report=$(maldet --report) # show result of scan
+	rkhuner=$(rkhunter -c) # Scan for Rootkit
+}
+
+
+<<first_backup
+for First Time app Get backup fir name 1 and Calculate sha256sum Directory
+and save them
+first_backup
 
 
 first(){
-	if [ "$time" = 1901 ];then
+	if [ "$time" = 2053 ];then
 		echo "Started First Backup..."
-		first_backup=$(tar cfvz 1_backup.tar.gz $Directory)
+		first_backup=$(tar cfvz $KYGnus_dir/1_backup.tar.gz $Directory)
 		echo $first_backup
 		echo "Start Calculate sha256um of Files in $Directory"
-		hash_first=$(find $Directory -type f -exec sha256sum {} \;)
+		hash_first=$(find $Directory -type f -exec sha256sum {} \; > $KYGnus_dir/sha256sum )
 		echo "sha256sum Files are Calculated" > Backup.txt
 		echo $hash_first
 
@@ -36,9 +69,16 @@ first(){
 
 first
 
+<<second_backup
+at this Part system check Directory in special Time and
+id get difference Between last backup and this ,get new One
+with name 2
+second_backup
+
+
 second(){
-	if [ "$time" = 1903 ];then
-		ff=$(find . -type f -iname "1_backup.tar.gz")
+	if [ "$time" = 2054 ];then
+		ff=$(find $KYgnus_dir -type f -iname "1_backup.tar.gz")
 		sha_s=$(find $Directory -type f -exec sha256sum {} \;)
 		if [ "$ff" ];then
 			dusage=$(du -sh $Directory)
@@ -47,6 +87,7 @@ second(){
 			else
 
 				echo "Start New Backup"
+				scan
 				tar cfvz 2_backup.tar.gz $Directory
 			fi
 		else
