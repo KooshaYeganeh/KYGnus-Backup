@@ -1,0 +1,69 @@
+#!/usr/bin/bash
+
+
+
+username=$(whoami)
+
+KYGnus_dir=/home/$username/KYGnus
+if test -d "$KYGnus_dir"; then
+	    echo "$KYGnus_dir exists."
+    else
+	    mkdir /home/$username/KYGnus
+fi
+
+Directory="/home/koosha/Documents/testfiles/RUST"
+
+
+
+time=$(date +%H%M)
+disk=$(du -sh $Directory)
+
+
+first(){
+	if [ "$time" = 1901 ];then
+		echo "Started First Backup..."
+		first_backup=$(tar cfvz 1_backup.tar.gz $Directory)
+		echo $first_backup
+		echo "Start Calculate sha256um of Files in $Directory"
+		hash_first=$(find $Directory -type f -exec sha256sum {} \;)
+		echo "sha256sum Files are Calculated" > Backup.txt
+		echo $hash_first
+
+
+	fi
+
+}
+
+first
+
+second(){
+	if [ "$time" = 1903 ];then
+		ff=$(find . -type f -iname "1_backup.tar.gz")
+		sha_s=$(find $Directory -type f -exec sha256sum {} \;)
+		if [ "$ff" ];then
+			dusage=$(du -sh $Directory)
+			if [ "$dusage" = "$disk" ];then
+				echo "No Detected File Changing"
+			else
+
+				echo "Start New Backup"
+				tar cfvz 2_backup.tar.gz $Directory
+			fi
+		else
+			echo "Error:First Not Detected First BAckup"
+		fi
+	fi
+
+
+}
+
+
+second
+
+
+
+
+
+
+
+
