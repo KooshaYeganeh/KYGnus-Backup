@@ -8,7 +8,7 @@ if You use Fedora(35) like Me, it Might be not have Crontab Installed Default
 Installer
 
 
-install_and_config_av(){
+clamAV(){
 	linux=$(cat /etc/os-release | grep -w "NAME=.*")
 		if [ "$linux" == "NAME=Fedora" ];then 
 		echo $(yum install clamav clamd)
@@ -60,7 +60,7 @@ install_and_config_av(){
 		fi
 }
 
-install_and_config_rootkit_hunter(){
+rootkit_hunter(){
 	echo $(cd /tmp)
 	echo $(wget http://downloads.sourceforge.net/project/rkhunter/rkhunter/1.4.6/rkhunter-1.4.6.tar.gz)
 	echo $(tar -xvf rkhunter-1.4.6.tar.gz)
@@ -70,7 +70,7 @@ install_and_config_rootkit_hunter(){
 
 
 
-install_and_config_malware_detect(){
+malware_detect(){
 	echo $(cd /usr/local/src)
 	echo $(wget http://www.rfxn.com/downloads/maldetect-current.tar.gz)
 	echo $(cd malwaredetect-1.5)
@@ -82,4 +82,22 @@ install_and_config_malware_detect(){
 
 
 
+
+
+menu(){
+	echo "[1] Install app with Dependencies"
+	echo "[2] Exit"
+	read input
+	if [ "$input" = 1 ];then
+		clamAV
+		rootkit_hunter
+		malware_detect
+	elif [ "$input" = 0 ];then
+		exit 0
+	else
+		echo "Enter Valid Number"
+	fi
+}
+
+menu
 
