@@ -53,7 +53,7 @@ first_backup
 
 
 first(){
-	if [ "$time" = 2053 ];then
+	if [ "$time" = 1600 ];then
 		echo "Started First Backup..."
 		first_backup=$(tar cfvz $KYGnus_dir/1_backup.tar.gz $Directory)
 		echo $first_backup
@@ -77,7 +77,7 @@ second_backup
 
 
 second(){
-	if [ "$time" = 2054 ];then
+	if [ "$time" = 2400 ];then
 		ff=$(find $KYgnus_dir -type f -iname "1_backup.tar.gz")
 		sha_s=$(find $Directory -type f -exec sha256sum {} \;)
 		if [ "$ff" ];then
