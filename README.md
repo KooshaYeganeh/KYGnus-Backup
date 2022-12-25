@@ -1,5 +1,5 @@
 
-##KYGnus_Backup
+# KYGnus_Backup
 
 
 ## INFO
@@ -12,7 +12,21 @@ in Scan part I use ClamAV and Rkhunter For Files Scanning for Malicious Files.
 
 ## Install
 
--> For Install it with Other supplies Rum Install File like This : ./install
+```
+wget https://github.com/KooshaYeganeh/KYGnus-Backup/archive/refs/heads/main.zip
+```
+
+```
+unzip main.zip
+```
+
+```
+cd KYGnus-Backup-main
+```
+
+```
+sudo cp KYGnus_Backup /usr/bin
+```
 
 -> add cron for This Script like this :
 
@@ -24,5 +38,5 @@ Note: I Write This code sand set This For my intent You can change it for own wo
 
 
 
-## REMOVE
+## Remove
 
